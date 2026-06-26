@@ -3,3 +3,9 @@ dist/
 *.tsbuildinfo
 .DS_Store
 .env
+
+# Internal working docs (kept local, not part of the public portfolio repo)
+PROGRESS.md
+PLAN.md
+CLAUDE.md
+docs/SCREENSHOTS.md

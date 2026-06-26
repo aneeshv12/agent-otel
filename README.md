@@ -79,9 +79,16 @@ Scenarios:
 | `truncation` | An answer capped at 16 tokens; the chat span shows `max_tokens`.            |
 | `streaming`  | A streamed completion; the span stays open until the stream ends.          |
 
-## Status
+## Status & roadmap
 
-Milestones 1-3 complete (core instrumentation, streaming/errors/tools, demo +
-Jaeger). The package is not yet published to npm. See `PLAN.md` for the roadmap
-(Claude Agent SDK layer, Grafana dashboard, publish) and `PROGRESS.md` for
-per-milestone notes.
+**Working today:** the core instrumentation (streaming and non-streaming chat
+spans, tool-execution spans, tool-use events, the content-capture toggle) and the
+failure-first demo with Jaeger. Not yet published to npm.
+
+**Planned:**
+
+- Claude Agent SDK integration — session / turn / tool-call spans with subagents
+  nested under their spawning tool call.
+- A Grafana dashboard for failure-at-a-glance: error rate, latency p95/p99 by
+  model, token/cost spikes, and a stop-reason breakdown (truncations, refusals).
+- An npm release.
