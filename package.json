@@ -1,0 +1,17 @@
+{
+  "name": "agent-otel-workspace",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Workspace root for agent-otel (OpenTelemetry instrumentation for the Anthropic SDK).",
+  "license": "MIT",
+  "workspaces": [
+    "lib",
+    "demo"
+  ],
+  "scripts": {
+    "typecheck": "npm run typecheck -w lib && npm run typecheck -w demo",
+    "test": "npm run test -w lib",
+    "build": "npm run build -w lib && npm run build -w demo",
+    "demo": "npm run demo -w demo --"
+  }
+}

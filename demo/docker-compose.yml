@@ -1,0 +1,16 @@
+# Jaeger all-in-one with native OTLP ingestion enabled.
+#
+#   docker compose up -d
+#
+# Then run a demo scenario (it ships spans to OTLP/HTTP on :4318) and open the
+# Jaeger UI at http://localhost:16686 to see the waterfall.
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.62.0
+    container_name: agent-otel-jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - "16686:16686" # Jaeger UI
+      - "4317:4317" # OTLP gRPC
+      - "4318:4318" # OTLP HTTP (the demo exports here)
