@@ -116,6 +116,12 @@ export const AnthropicAttr = {
   USAGE_CACHE_READ_INPUT_TOKENS: "anthropic.usage.cache_read_input_tokens",
   /** Tokens written to the prompt cache (Anthropic `usage.cache_creation_input_tokens`). */
   USAGE_CACHE_CREATION_INPUT_TOKENS: "anthropic.usage.cache_creation_input_tokens",
+  /** Total cost of a Claude Agent SDK run in USD (`result.total_cost_usd`). */
+  AGENT_COST_USD: "anthropic.agent.cost_usd",
+  /** Number of turns in a Claude Agent SDK run (`result.num_turns`). */
+  AGENT_NUM_TURNS: "anthropic.agent.num_turns",
+  /** Wall-clock duration of a Claude Agent SDK run in ms (`result.duration_ms`). */
+  AGENT_DURATION_MS: "anthropic.agent.duration_ms",
 } as const;
 
 /**
@@ -132,4 +138,15 @@ export function chatSpanName(model: string): string {
  */
 export function executeToolSpanName(toolName: string): string {
   return `${GenAiOperationName.EXECUTE_TOOL} ${toolName}`;
+}
+
+/**
+ * Builds the conventional span name for an agent invocation:
+ * `"invoke_agent {agent name}"`, or just `"invoke_agent"` when no name is known.
+ * Source: gen-ai-agent-spans.md Invoke Agent span.
+ */
+export function invokeAgentSpanName(agentName?: string): string {
+  return agentName === undefined || agentName === ""
+    ? GenAiOperationName.INVOKE_AGENT
+    : `${GenAiOperationName.INVOKE_AGENT} ${agentName}`;
 }

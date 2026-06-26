@@ -31,10 +31,17 @@
     "test": "vitest run"
   },
   "peerDependencies": {
+    "@anthropic-ai/claude-agent-sdk": ">=0.3.0",
     "@anthropic-ai/sdk": ">=0.30.0",
     "@opentelemetry/api": "^1.9.0"
   },
+  "peerDependenciesMeta": {
+    "@anthropic-ai/claude-agent-sdk": {
+      "optional": true
+    }
+  },
   "devDependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.193",
     "@anthropic-ai/sdk": "^0.104.1",
     "@opentelemetry/api": "^1.9.1",
     "@opentelemetry/sdk-trace-base": "^2.8.0",

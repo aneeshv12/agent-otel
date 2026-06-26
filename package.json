@@ -9,9 +9,10 @@
     "demo"
   ],
   "scripts": {
-    "typecheck": "npm run typecheck -w lib && npm run typecheck -w demo",
+    "typecheck": "npm run build -w lib && npm run typecheck -w lib && npm run typecheck -w demo",
     "test": "npm run test -w lib",
     "build": "npm run build -w lib && npm run build -w demo",
-    "demo": "npm run demo -w demo --"
+    "demo": "npm run demo -w demo --",
+    "demo:agent": "npm run demo:agent -w demo"
   }
 }

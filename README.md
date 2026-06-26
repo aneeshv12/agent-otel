@@ -37,6 +37,23 @@ const message = await client.messages.create({ model, max_tokens, messages });
 const result = await withToolSpan("read_file", input, () => readFile(input));
 ```
 
+### Claude Agent SDK
+
+For agentic runs, wrap the `query()` event stream. Iterating it emits an
+`invoke_agent` session span with `chat` turns and `execute_tool` calls, and
+**subagents nested under the `Task` span that spawned them**:
+
+```ts
+import { query } from "@anthropic-ai/claude-agent-sdk";
+import { instrumentAgentQuery } from "agent-otel";
+
+for await (const message of instrumentAgentQuery(query({ prompt, options }))) {
+  // ...handle messages as usual; spans are built as a side effect.
+}
+```
+
+![A subagent nested under its spawning tool span in Jaeger](docs/jaeger-invoke-agent.png)
+
 - **Streaming and non-streaming** are both traced; the span stays open until a
   stream is fully consumed and aggregates final usage.
 - **Content capture is OFF by default** — prompts and completions are recorded as
@@ -79,16 +96,20 @@ Scenarios:
 | `truncation` | An answer capped at 16 tokens; the chat span shows `max_tokens`.            |
 | `streaming`  | A streamed completion; the span stays open until the stream ends.          |
 
+For the Agent SDK layer, `npm run demo:agent` runs a `query()` that delegates to
+a subagent; its trace is an `invoke_agent` session with the subagent's turns
+nested under the `Task` span.
+
 ## Status & roadmap
 
 **Working today:** the core instrumentation (streaming and non-streaming chat
-spans, tool-execution spans, tool-use events, the content-capture toggle) and the
-failure-first demo with Jaeger. Not yet published to npm.
+spans, tool-execution spans, tool-use events, the content-capture toggle), the
+Claude Agent SDK layer (`invoke_agent` session / turn / tool-call spans with
+nested subagents), and the failure-first demo with Jaeger. Not yet published to
+npm.
 
 **Planned:**
 
-- Claude Agent SDK integration — session / turn / tool-call spans with subagents
-  nested under their spawning tool call.
 - A Grafana dashboard for failure-at-a-glance: error rate, latency p95/p99 by
   model, token/cost spikes, and a stop-reason breakdown (truncations, refusals).
 - An npm release.

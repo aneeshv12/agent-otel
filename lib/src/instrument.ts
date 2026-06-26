@@ -18,7 +18,7 @@ import {
   executeToolSpanName,
 } from "./semconv.js";
 
-const TRACER_NAME = "agent-otel";
+export const TRACER_NAME = "agent-otel";
 
 /**
  * Returns true when the caller has opted-in to capturing message content as
@@ -203,7 +203,7 @@ function resolveErrorType(error: unknown): string {
 }
 
 /** Marks a span as errored. Never throws — bookkeeping must not mask the real error. */
-function recordSpanError(span: Span, error: unknown): void {
+export function recordSpanError(span: Span, error: unknown): void {
   try {
     span.setStatus({ code: SpanStatusCode.ERROR });
     span.setAttribute(ErrorAttr.TYPE, resolveErrorType(error));
